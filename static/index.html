@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 YOLO Vehicle Damage Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚗 YOLO Vehicle Damage Detection</h1>
+
+        <div class="info-panel">
+            <h3>🎯 ระบบตรวจจับความเสียหายรถยนต์ (มุมมาตรฐาน 8 มุม)</h3>
+            <p>อัปโหลดรูปภาพรถยนต์ทั้ง 8 มุมมาตรฐาน: หน้าตรง, หลังตรง, ซ้าย, ขวา, หน้าซ้าย 45°, หน้าขวา 45°, หลังซ้าย
+                45°, หลังขวา 45° ระบบจะวิเคราะห์และสร้างรายงาน PDF</p>
+
+            <div class="class-legend">
+                <h4>🎨 ประเภทความเสียหายที่ตรวจจับได้:</h4>
+                <div class="class-items">
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(255,0,0);"></div>
+                        <span>รอยบุบ (Dent)</span>
+                    </div>
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(0,255,0);"></div>
+                        <span>รอยขีดข่วน (Scratch)</span>
+                    </div>
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(0,0,255);"></div>
+                        <span>รอยแตก (Crack)</span>
+                    </div>
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(255,255,0);"></div>
+                        <span>กระจกแตก (Shattered Glass)</span>
+                    </div>
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(255,0,255);"></div>
+                        <span>ไฟเสีย (Broken Lamp)</span>
+                    </div>
+                    <div class="class-item">
+                        <div class="color-box" style="background: rgb(0,255,255);"></div>
+                        <span>ยางแบน (Flat Tire)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <h3>📷 อัปโหลดรูปภาพ 8 มุมมาตรฐาน</h3>
+            <p style="margin-top:-6px; color:#666;">เลือกภาพให้ตรงกับมุมที่กำหนด
+                เมื่อเลือกแล้วจะมีตัวอย่างภาพให้ยืนยันทันที</p>
+
+            <div class="car-hotspots">
+                <div class="car-frame">
+                    <img src="/static/car_wireframe.jpg" alt="car wireframe" class="car-frame-img">
+
+                    <button class="hotspot pulse" data-angle-key="right" style="left:50%; top:12%;" title="ขวา">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="ขวา">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="left" style="left:50%; top:88%;" title="ซ้าย">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="ซ้าย">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="front" style="left:12%; top:50%;" title="หน้าตรง">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หน้าตรง">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="back" style="left:88%; top:50%;" title="หลังตรง">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หลังตรง">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="front_right_45" style="left:5%; top:20%;"
+                        title="หน้าขวา 45°">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หน้าขวา 45°">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="back_right_45" style="left:95%; top:22%;"
+                        title="หลังขวา 45°">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หลังขวา 45°">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="front_left_45" style="left:5%; top:78%;"
+                        title="หน้าซ้าย 45°">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หน้าซ้าย 45°">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+
+                    <button class="hotspot pulse" data-angle-key="back_left_45" style="left:95%; top:78%;"
+                        title="หลังซ้าย 45°">
+                        <span class="plus">+</span>
+                        <img class="hotspot-preview" alt="หลังซ้าย 45°">
+                        <span class="hotspot-clear" aria-label="ลบรูปภาพ" title="ลบรูปภาพ">x</span>
+                    </button>
+                </div>
+
+                <div class="hotspot-legend">
+                    <div>หน้าตรง: <span id="cov-front">-</span></div>
+                    <div>หลังตรง: <span id="cov-back">-</span></div>
+                    <div>ซ้าย: <span id="cov-left">-</span></div>
+                    <div>ขวา: <span id="cov-right">-</span></div>
+                    <div>หน้าซ้าย 45°: <span id="cov-front_left_45">-</span></div>
+                    <div>หน้าขวา 45°: <span id="cov-front_right_45">-</span></div>
+                    <div>หลังซ้าย 45°: <span id="cov-back_left_45">-</span></div>
+                    <div>หลังขวา 45°: <span id="cov-back_right_45">-</span></div>
+                </div>
+            </div>
+
+            <input type="file" id="angle-front" accept="image/*" style="display:none;">
+            <input type="file" id="angle-back" accept="image/*" style="display:none;">
+            <input type="file" id="angle-left" accept="image/*" style="display:none;">
+            <input type="file" id="angle-right" accept="image/*" style="display:none;">
+            <input type="file" id="angle-front_left_45" accept="image/*" style="display:none;">
+            <input type="file" id="angle-front_right_45" accept="image/*" style="display:none;">
+            <input type="file" id="angle-back_left_45" accept="image/*" style="display:none;">
+            <input type="file" id="angle-back_right_45" accept="image/*" style="display:none;">
+
+            <div class="action-buttons" style="margin-top:18px;">
+                <button id="detectBtn" class="detect-button" disabled onclick="detectDamage()">
+                    🔍 ตรวจจับความเสียหาย (ต้องอัปโหลดและยืนยันครบทั้ง 8 มุม)
+                </button>
+                <button id="downloadPdfBtn" class="download-pdf-button" disabled onclick="downloadPDF()">
+                    📄 ดาวน์โหลดรายงาน PDF
+                </button>
+                <button id="downloadZipBtn" class="download-zip-button" disabled onclick="downloadImagesZip()">
+                    📦 ดาวน์โหลดรูปทั้งหมด ZIP
+                </button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p id="loadingText">กำลังวิเคราะห์รูปภาพ... โปรดรอสักครู่</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="summary-section">
+                <h3>📊 สรุปผลการตรวจจับ</h3>
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-number" id="totalImages">0</div>
+                        <div>รูปภาพทั้งหมด</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number" id="totalDetections">0</div>
+                        <div>ความเสียหายพบ</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number" id="damagedImages">0</div>
+                        <div>รูปที่มีความเสียหาย</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-number" id="averageConfidence">0%</div>
+                        <div>ความแม่นยำเฉลี่ย</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="images-grid" id="imagesGrid">
+            </div>
+        </div>
+    </div>
+
+    <dialog id="confirmDialog" style="max-width:720px; width:90%;">
+        <h4 style="margin-top:0;">ตรวจสอบภาพ</h4>
+        <img id="confirmImg" alt="preview" style="width:100%; height:auto; border-radius:8px;">
+        <p id="confirmText" style="color:#4b5563; margin-top:10px;">ภาพนี้คือมุมที่คุณเลือกหรือไม่?</p>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:12px;">
+            <button class="remove-file" type="button" id="confirmCancel">ยกเลิก</button>
+            <button class="detect-button" type="button" id="confirmOk">ยืนยัน</button>
+        </div>
+    </dialog>
+
+    <input type="file" id="imageFiles" class="file-input" accept="image/*" multiple style="display:none;">
+    <div id="selectedFiles" class="selected-files" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h4 style="display: none; margin:0;">📁 ไฟล์ที่เลือก:</h4>
+            <button id="clearAllBtn" class="remove-file" onclick="clearAllFiles()"
+                style="display: none; font-size:14px; padding:6px 12px;">🗑️ ลบทั้งหมด</button>
+        </div>
+        <div style="display: none;" id="filesList"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="/static/refactor.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
