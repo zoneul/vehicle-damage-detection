@@ -8,3 +8,5 @@ torch
 ultralytics>=8.3.204
 uvicorn
 python-multipart
+tqdm
+scikit-learn

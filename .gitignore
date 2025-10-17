@@ -181,3 +181,6 @@ desktop.ini
 # Temporary upload files
 uploads/
 temp/
+
+rawdata/
+datasets/
